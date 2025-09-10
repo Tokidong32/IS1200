@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/viktor_danielsson/KTH kurser/2025/HT25/IS1200/Labborationer/LABB_2_Filer/lab2-files/prime'
+relocations:     []
+...
