@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 typedef struct Cell
 {
     int type; // 0=Empty,1=Wall,2=Head,3=Body,4=End,5=Apple
@@ -27,8 +28,10 @@ Cell newCell(int type, int rows, int colums){
     return cell;
 }
 
+
+
 Board *newBoard(int rows, int colums){
-    Board *gameBoard = malloc(sizeof(Board));
+    Board *gameBoard = malloc(sizeof(Board)); 
     gameBoard->cells = malloc(rows*sizeof(Cell*));
     gameBoard->rows = rows;
     gameBoard->colums = colums;
@@ -41,6 +44,10 @@ Board *newBoard(int rows, int colums){
     }
     return gameBoard;
 }
+
+Board *game;
+Cell *snakeHead;
+Cell *snakeEnd;
 
 void freeBoard(Board *board){
     for (int i = 0; i < board->rows; i++)
@@ -138,14 +145,18 @@ void tick(Board *game, Cell **head, Cell **end, int dir) {
     *head = moveHead((*head), next);
 }
 
+
+
+
 int main(){
     int rows = 8;
     int colums = 8;
-    
-    Board *game = newBoard(rows,colums);
+
+    game = newBoard(rows,colums);
     makeWalls(game);
-    Cell *snakeHead = malloc(sizeof(Cell*));
-    Cell *snakeEnd = malloc(sizeof(Cell*));
+    snakeHead = malloc(sizeof(Cell*));
+    snakeEnd = malloc(sizeof(Cell*));
+
     game->cells[2][2].type = 5;
     snakeHead = &game->cells[3][3];
     game->cells[3][3].type = 2;
