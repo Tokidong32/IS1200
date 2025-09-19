@@ -1,37 +1,27 @@
+#include "SnakeMain.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
+int lastDir = 4;
 
-typedef struct Cell
-{
-    int type; // 0=Empty,1=Wall,2=Head,3=Body,4=End,5=Apple
-    int posX;
-    int posY;
-    struct Cell *nextCell; 
-}Cell;
+Pos newPos(int x, int y){
+    Pos pos;
+    pos.x = x;
+    pos.y = y;
+    return pos;
+}
 
-typedef struct Board
-{
-    int rows;
-    int colums;
-    Cell **cells;
-    
-}Board;
-
-
-Cell newCell(int type, int rows, int colums){
+Cell newCell(int type, int row, int colum){
     Cell cell;
     cell.type = type;
-    cell.posX = rows;
-    cell.posY = colums;
+    cell.pos = newPos(row, colum);
     cell.nextCell = NULL;
     return cell;
 }
 
-
-
 Board *newBoard(int rows, int colums){
-    Board *gameBoard = malloc(sizeof(Board)); 
+    Board *gameBoard = malloc(sizeof(Board));
     gameBoard->cells = malloc(rows*sizeof(Cell*));
     gameBoard->rows = rows;
     gameBoard->colums = colums;
@@ -44,10 +34,6 @@ Board *newBoard(int rows, int colums){
     }
     return gameBoard;
 }
-
-Board *game;
-Cell *snakeHead;
-Cell *snakeEnd;
 
 void freeBoard(Board *board){
     for (int i = 0; i < board->rows; i++)
@@ -83,7 +69,9 @@ void printBoard(Board *game){
 Cell* moveEnd(Cell *from){
     from->type = 0;
     from->nextCell->type = 4;
-    return from->nextCell;
+    Cell *next = from->nextCell;
+    from->nextCell = NULL; 
+    return next;
 }
 
 Cell* moveHead(Cell *from, Cell *to ){
@@ -92,87 +80,130 @@ Cell* moveHead(Cell *from, Cell *to ){
     to->type = 2;
     return to;
 }
-
+// INTE DET BÄSTA SÄTTET MÖJLIGT
 void newApple(Board *game){
     //scana efter godkända Celler
-        //en array med Cell pekare
+        //en array med pos
+    Pos* validPos[(game->rows-2)*(game->colums-2)];
+    int nofValidPos = 0;
+    for (int i = 1; i < game->rows-1; i++){
+        for (int j = 1; j < game->colums-1; j++){
+            if(game->cells[i][j].type == 0){
         //om cellens typ är 0 dvs tom läggs en pekare till den cellen in i arrayen
-        //increment antal godkända Celler
+                validPos[nofValidPos++  /*increment antal godkända Celler*/] = &game->cells[i][j].pos;
+            }
+        }
+    }
+    srand(time(NULL));
+    int choose = rand() % nofValidPos;
+    int x = validPos[choose]->x;
+    int y = validPos[choose]->y;
 
-    //välj en av de godkända Cellr
-        //rand() %  antal godkända Celler
-        
-    //ändra cellen till ett äpple
-        //Cell->type = 5;
+    game->cells[x][y].type = 5;
 }
 
-void tick(Board *game, Cell **head, Cell **end, int dir) {
-    int posX = (*head)->posX;
-    int posY = (*head)->posY;
+Cell* getCellInDirection(Board* game, Cell* from, int dir){
+    int posX = from->pos.x;
+    int posY = from->pos.y;
+    Cell* to;
 
-    Cell *next = NULL;
-    switch (dir)
+    switch ( dir ) //vilken riktning var väljd
     {
-    case 1:
-        next = &game->cells[posX][posY+1];
+    case 1: // höger
+        to = &game->cells[posX][posY+1];
         break;
-    case 2:
-        next = &game->cells[posX][posY-1];
+    case 3: // vänster
+        to = &game->cells[posX][posY-1];
         break;
-    case 3: // up
-        next = &game->cells[posX-1][posY];
+    case 2: // up
+        to = &game->cells[posX-1][posY];
         break;
     case 4: // ner
-        next = &game->cells[posX+1][posY];
+        to = &game->cells[posX+1][posY];
         break;
-    default:
-        // ERROR
-        break;
+    }
+    return to;
+}
+
+int tick(Board *game, Cell **head, Cell **end, int dir, int* score) {
+    int posX = (*head)->pos.x;
+    int posY = (*head)->pos.y;
+
+    Cell *next = NULL;
+
+    if(lastDir % 2 == 0){
+        if(dir % 2 == 1){
+            next = getCellInDirection(game,*head,dir);
+            lastDir = dir;
+        }
+        else{
+            next = getCellInDirection(game,*head,lastDir);
+        }
+    }
+    else{
+        if(dir % 2 == 0){
+            next = getCellInDirection(game,*head,dir);
+            lastDir = dir;
+        }
+        else{
+            next = getCellInDirection(game,*head,lastDir);
+        }
     }
 
     if (next->type > 0 ) // vi har koliderat med något
     {
         if(next->type <= 4) // vi har koliderat med en vägg eller kroppen/ om det är slutet så kommer vi inte kollidera
         {
-            //GAMEOVER
+            return 0;
         }
         // vi har ätit ätt äpple och kommer inte flytta slutet för att växa
+        *score++;
+        newApple(game);
     }
-    else{ // vi kryper på en tom ruta och flytar slutet för att inte växa
+    else{ // vi kryper på en tom ruta och flyttar slutet för att inte växa
         *end = moveEnd((*end));
     }
-    
     *head = moveHead((*head), next);
+
+    return 1;
 }
 
+void startPos(Board *game, Cell **head, Cell **end){
+    int middelY = game->colums/2;
+    int middelX = game->rows/2;
 
-
+    (*head) = &game->cells[middelX][middelY];
+    game->cells[middelX][middelY].type = 2;
+    (*end) = &game->cells[middelX-1][middelY];
+    game->cells[middelX-1][middelY].type = 4;
+    (*end)->nextCell = *head;
+    game->cells[middelX+2][middelY].type = 5;
+}
 
 int main(){
-    int rows = 8;
-    int colums = 8;
-
-    game = newBoard(rows,colums);
+    int rows = 19;
+    int colums = 19;
+    int score = 0;
+    
+    Board *game = newBoard(rows,colums);
     makeWalls(game);
-    snakeHead = malloc(sizeof(Cell*));
-    snakeEnd = malloc(sizeof(Cell*));
-
-    game->cells[2][2].type = 5;
-    snakeHead = &game->cells[3][3];
-    game->cells[3][3].type = 2;
-    snakeEnd = &game->cells[3][4];
-    game->cells[3][4].type = 4;
-    snakeEnd->nextCell = snakeHead;
-
-    printBoard(game);
-    printf("\n");
-
-    tick(game,&snakeHead,&snakeEnd,2);
+    Cell *snakeHead;
+    Cell *snakeEnd;
+    startPos(game,&snakeHead,&snakeEnd);
     printBoard(game);
 
-    tick(game,&snakeHead,&snakeEnd,3);
-    printBoard(game);
+    while (1)
+    {
+        if(tick(game,&snakeHead,&snakeEnd,3,&score)){
+            printBoard(game);
+            printf("\n");
 
-    tick(game,&snakeHead,&snakeEnd,1);
-    printBoard(game);
+        }else{
+            printf("gameOver");
+            freeBoard(game);
+            break;
+        }
+    }
+    
+    return score;
 }
