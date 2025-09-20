@@ -319,11 +319,20 @@ int main()
     timer_init();
     GPIOInit();
 
-  while (1)
-  {
-   int tmp = (*GPIO_DATA & 0xf);
-   if(tmp > 0)
-    btn = tmp;
-  }
+   while (1)
+    {
+        if(tick(game,head,end,3,&score)){
+            printBoard(game);
+            printf("\n");
+
+        }else{
+            printf("gameOver");
+            freeBoard(game);
+            break;
+        }
+    }
   score = score+0;
 }
+
+   
+    
