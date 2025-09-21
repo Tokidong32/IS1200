@@ -7,26 +7,23 @@
 
 int main()
 {    
-
-    gpioInit();    
-
+    gpioInit();  
     int menuPick = runMenu();
     
-    clearScreen();
     switch (menuPick)
     {
-    case 0:
-        runGame();
-        clearScreen();
-        break;
+        case 0:
+            runGame();
+            clearScreen();
+            break;
 
-    case 1:
-        //highScoreMenu();
-        clearScreen();
-        break;
-    case 2:
-        clearScreen();
-        return 0;
-        break;  
+        case 1:
+            //highScoreMenu();
+            clearScreen();
+            break;
+        case 2:
+            clearScreen();
+            return 0;
+            break;  
     }
 }

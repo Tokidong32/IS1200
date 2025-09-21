@@ -69,7 +69,43 @@ void clearScreen()
     
 }
 
-void drawMainMenu(int highlight)
+void drawMenuHighlight(int highlight,int lastHighlight)
+{   
+    int offsetX = RESOLUTION_X/4;
+    
+    /*
+    *
+    *Remove old lines by overwriting old line with black colour.
+    *
+    * Function replaced switch case to determine where the line should be drawn in the y axis
+    * 
+    */
+    float prevLineFloat = (RESOLUTION_Y/8)+ MAIN_MENU_RES_Y*(((10*lastHighlight)+19.0)/40)+10;
+    int prevLineInt = (int)prevLineFloat;
+
+    for (int x = MAIN_MENU_RES_X/10; x < MAIN_MENU_RES_X-MAIN_MENU_RES_X/10; x++)
+    {
+        drawPixel(x+offsetX,prevLineInt,BLACK);
+        drawPixel(x+offsetX,prevLineInt+1,BLACK);
+        drawPixel(x+offsetX,prevLineInt+2,BLACK);
+    }
+
+   
+    /*
+    *   draw the newly selected line with the new highlight value
+    */
+    float newLineFloat = (RESOLUTION_Y/8)+ MAIN_MENU_RES_Y*(((10*highlight)+19.0)/40)+10;
+    int newLineInt = (int)newLineFloat;
+
+    for (int x = MAIN_MENU_RES_X/10; x < MAIN_MENU_RES_X-MAIN_MENU_RES_X/10; x++)
+    {
+        drawPixel(x+offsetX,newLineInt,GREEN);
+        drawPixel(x+offsetX,newLineInt+1,GREEN);
+        drawPixel(x+offsetX,newLineInt+2,GREEN);
+    }
+}
+
+void drawMainMenu()
 {
     //placement
     int offsetX = RESOLUTION_X/4;
@@ -93,26 +129,5 @@ void drawMainMenu(int highlight)
                  drawPixel(x+offsetX,y+offsetY,BLACK);
             }
         }
-    }
-    
-    switch (highlight)
-    {
-    case 0:
-        offsetY += MAIN_MENU_RES_Y*19/40;
-        break;
-    case 1:
-        offsetY += MAIN_MENU_RES_Y*29/40;
-        break;
-    case 2:
-        offsetY += MAIN_MENU_RES_Y*19/20;
-        break;
-    }
-    offsetY += 10;
-
-    for (int x = MAIN_MENU_RES_X/10; x < MAIN_MENU_RES_X-MAIN_MENU_RES_X/10; x++)
-    {
-        drawPixel(x+offsetX,offsetY,GREEN);
-        drawPixel(x+offsetX,offsetY+1,GREEN);
-        drawPixel(x+offsetX,offsetY+2,GREEN);
     }
 }

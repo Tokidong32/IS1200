@@ -26,6 +26,7 @@ void drawBoard(Board* game);
 
 void clearScreen();
 
-void drawMainMenu(int highlight);
+void drawMainMenu();
 
+void drawMenuHighlight(int highlight, int lastHighlight);
 #endif 

@@ -4,8 +4,6 @@
 
 #define main_menu
 
-int moveSelect(int active_option);
-
 int runMenu();
 
 #endif
