@@ -77,7 +77,7 @@ void timer_init()
 }
 
 
-int run_game()
+int runGame()
 {
   Board newBoard;
   Cell* newHead;

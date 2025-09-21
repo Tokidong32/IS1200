@@ -3,20 +3,30 @@
 #include "../headers/game_loop.h"
 #include "../headers/game_logic.h"
 #include "../headers/gpio_utils.h"
+#include "../headers/main_menu.h"
 
 int main()
 {    
-    gpio_Init();
 
-    run_game();
-    print("\n");
+    gpioInit();    
 
-    run_game();
-    print("\n");
+    int menuPick = runMenu();
+    
+    clearScreen();
+    switch (menuPick)
+    {
+    case 0:
+        runGame();
+        clearScreen();
+        break;
 
-    run_game();
-
-
-    print("\n");
-    print("Stopped");
+    case 1:
+        //highScoreMenu();
+        clearScreen();
+        break;
+    case 2:
+        clearScreen();
+        return 0;
+        break;  
+    }
 }

@@ -6,7 +6,6 @@
 
 extern int player_button;
 
-//extern int snake_lastdir;
 extern int player_score; 
 
 #endif

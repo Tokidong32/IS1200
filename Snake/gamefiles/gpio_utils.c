@@ -1,6 +1,6 @@
 #include "../headers/gpio_utils.h"
 
-void gpio_Init()
+void gpioInit()
 {
   *GPIO_DIRE = 0xf;
 }

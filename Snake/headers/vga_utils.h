@@ -24,4 +24,8 @@ void drawCell(Cell* model);
 
 void drawBoard(Board* game);
 
+void clearScreen();
+
+void drawMainMenu(int highlight);
+
 #endif 

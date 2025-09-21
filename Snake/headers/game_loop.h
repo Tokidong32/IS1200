@@ -11,13 +11,12 @@
 #define TMR_PRDH ((volatile short*)0x0400002C)
 
 
-
 extern void enable_interrupt();
 
 int gameTick(Board *game, Cell **head, Cell **end, int dir);
 
 void handle_interrupt(unsigned cause);
 
-int run_game();
+int runGame();
 
 #endif
