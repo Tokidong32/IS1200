@@ -29,4 +29,8 @@ void clearScreen();
 void drawMainMenu();
 
 void drawMenuHighlight(int highlight, int lastHighlight);
+
+void drawScore(int score);
+
+void drawNumber(int value, int offset);
 #endif 

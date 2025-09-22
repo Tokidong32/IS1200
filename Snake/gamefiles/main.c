@@ -7,6 +7,7 @@
 
 int main()
 {    
+    clearScreen();
     gpioInit();  
     int menuPick = runMenu();
     

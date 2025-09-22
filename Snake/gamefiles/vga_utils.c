@@ -131,3 +131,345 @@ void drawMainMenu()
         }
     }
 }
+
+/*
+skriver ut en siffra på särmen på rätt plats på spel skärmen
+int value: är siffran som ska skrivas ut
+int offset: är förskutningen i x-led     
+*/
+void drawNumber(int value, int offset){
+
+  int pxToPaint[14][10];
+  for (int y = 0; y < 14; y++){
+    for (int x = 0; x < 10; x++){
+      pxToPaint[y][x] = 0;
+    } 
+  }  
+
+  switch (value)
+  {
+  case 0:
+      //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 0; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //vänstra raden
+    for (int y = 0; y < 14; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 0; y < 14; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 0; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    break;
+  case 1:
+    //mitten raden
+    for (int y = 0; y < 14; y++){
+      for (int x = 4; x < 6; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    break;
+  case 2:
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //snedden
+    for (int y = 4; y < 12; y++){
+      for (int x = 11 - y; x <= 11 - y + 3 ; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 0; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //sista bitarna
+    pxToPaint[1][0] = 1;
+    pxToPaint[2][0] = 1;
+    pxToPaint[2][1] = 1;
+    
+    pxToPaint[3][8] = 1;
+    pxToPaint[3][9] = 1;
+    pxToPaint[2][8] = 1;
+    pxToPaint[2][9] = 1;
+    break;
+  case 3:
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 4; x < 8; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 1; y < 13; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //sista bitarna
+    pxToPaint[1][0] = 1;
+    pxToPaint[2][0] = 1;
+    pxToPaint[2][1] = 1;
+    
+    pxToPaint[2][7] = 1;
+
+    pxToPaint[11][7] = 1;
+    
+    pxToPaint[11][0] = 1;
+    pxToPaint[11][1] = 1;
+    pxToPaint[12][0] = 1;
+    break;
+  case 4:
+    //vänstra raden
+    for (int y = 0; y < 8; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 2; x < 8; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 0; y < 14; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    break;
+  case 5:
+    //översta raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 0; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //vänstra raden
+    for (int y = 2; y < 7; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 2; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 8; y < 13; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //sista bitarna
+    pxToPaint[7][1] = 1;
+    pxToPaint[7][9] = 1;
+    
+    pxToPaint[11][7] = 1;
+    pxToPaint[13][8] = 1;
+    
+    pxToPaint[11][1] = 1;
+    pxToPaint[11][0] = 1;
+    pxToPaint[12][0] = 1;
+    break;
+  case 6:
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }    
+    //vänstra raden
+    for (int y = 1; y < 13; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }    
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 2; x < 8; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 7; y < 13; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    break;
+  case 7:
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 3; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //snedden
+    pxToPaint[3][8] = 1;
+    pxToPaint[3][7] = 1;
+    pxToPaint[2][8] = 1;
+    pxToPaint[2][7] = 1;
+    
+    pxToPaint[4][6] = 1;
+    pxToPaint[4][7] = 1;
+    pxToPaint[5][6] = 1;
+    pxToPaint[5][7] = 1;
+    
+    pxToPaint[8][5] = 1;
+    pxToPaint[8][6] = 1;
+    pxToPaint[9][5] = 1;
+    pxToPaint[9][6] = 1;
+    
+    pxToPaint[10][4] = 1;
+    pxToPaint[10][5] = 1;
+    pxToPaint[11][4] = 1;
+    pxToPaint[11][5] = 1;
+    
+    pxToPaint[12][3] = 1;
+    pxToPaint[12][4] = 1;
+    pxToPaint[13][3] = 1;
+    pxToPaint[13][4] = 1;
+    break;
+  case 8:
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 2; x < 8; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 1; y < 13; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //vänstra raden
+    for (int y = 1; y < 13; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    } 
+    break;
+  default:// 9
+    //övre raden
+    for (int y = 0; y < 2; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //högra raden
+    for (int y = 1; y < 13; y++){
+      for (int x = 8; x < 10; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //vänstra raden
+    for (int y = 1; y < 7; y++){
+      for (int x = 0; x < 2; x++){
+        pxToPaint[y][x] = 1;
+      }
+    } 
+    //mitten raden
+    for (int y = 6; y < 8; y++){
+      for (int x = 1; x < 8; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    //nedre raden
+    for (int y = 12; y < 14; y++){
+      for (int x = 1; x < 9; x++){
+        pxToPaint[y][x] = 1;
+      }
+    }
+    break;
+  }
+
+  for (int y = 0; y < 14; y++){
+    for (int x = 0; x < 10; x++){
+      if(pxToPaint[y][x]){
+        drawPixel(x+70+offset,y+8,0xff);
+      }else{
+        drawPixel(x+70+offset,y+8,0x00);
+      }
+    } 
+  }  
+}
+
+/*
+skriver ut poängen under spelets gång
+int score: är poängen som ska skrivas ut
+*/
+void drawScore(int score){
+    int i = 1000;
+    int offset = 0;
+    while (i>0)
+    {
+        drawNumber((score/i) % 10,offset);  
+        i = i/10;
+        offset += 12;
+    }
+}
