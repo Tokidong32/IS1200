@@ -102,7 +102,7 @@ Cell* getCellInDirection(Board* game, Cell* from, int dir){
 
 void game_init(Board *game, Cell **head, Cell **end)
 {
-    player_score = 0;
+    currentGameScore = 0;
 
     int boardcol = game->colums;
     int boardrow = game->rows;

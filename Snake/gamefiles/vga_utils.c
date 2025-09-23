@@ -1,6 +1,8 @@
 #include "../headers/vga_utils.h"
 #include "../headers/main_menu_image.h"
+#include "../headers/highscore_letters_image.h"
 
+#include "../headers/dtekv-lib.h"
 
 void drawPixel(int x, int y, int color)
 {
@@ -25,11 +27,11 @@ void drawCell(Cell* model){
         break;
     //Snake_body colour
     case 3:
-        color = PINK;
+        color = GREEN;
         break;
     //Snake_head colour
     case 2:
-        color = PINK;
+        color = GREEN;
         break;
     //Wall colour
     case 1:
@@ -66,22 +68,22 @@ void clearScreen()
     {
         addr[i] = BLACK;
     }
-    
 }
 
 void drawMenuHighlight(int highlight,int lastHighlight)
-{   
-    int offsetX = RESOLUTION_X/4;
-    
+{    
     /*
     *
-    *Remove old lines by overwriting old line with black colour.
+    * Remove old lines by overwriting old line with black colour.
     *
     * Function replaced switch case to determine where the line should be drawn in the y axis
-    * 
+    *  (RESOLUTION_Y/8) places the y axis within where the menu is drawn
+    *  Then the rest is a linear function to place the line at the correct y axis 
     */
     float prevLineFloat = (RESOLUTION_Y/8)+ MAIN_MENU_RES_Y*(((10*lastHighlight)+19.0)/40)+10;
     int prevLineInt = (int)prevLineFloat;
+    
+    int offsetX = RESOLUTION_X/4;
 
     for (int x = MAIN_MENU_RES_X/10; x < MAIN_MENU_RES_X-MAIN_MENU_RES_X/10; x++)
     {
@@ -90,7 +92,6 @@ void drawMenuHighlight(int highlight,int lastHighlight)
         drawPixel(x+offsetX,prevLineInt+2,BLACK);
     }
 
-   
     /*
     *   draw the newly selected line with the new highlight value
     */
@@ -122,18 +123,67 @@ void drawMainMenu()
             */
             if(image_data[y*MAIN_MENU_RES_X+x]) 
             {
-                 drawPixel(x+offsetX,y+offsetY,WHITE);
+                drawPixel(x+offsetX,y+offsetY,WHITE);
             }
             else
             {
-                 drawPixel(x+offsetX,y+offsetY,BLACK);
+                drawPixel(x+offsetX,y+offsetY,BLACK);
+            }
+        }
+    }
+}
+/*
+*
+* place or remove a letter between 1-3 and A-C at offset X and Y
+*
+*/
+void drawLetter(char letter, int offsetX, int offsetY, char remove)
+{
+    int firstIndx = 0;
+    int lastIndx = 0;
+
+    getLetterFromArray(letter, &firstIndx, &lastIndx);
+    /*
+    * The difference between last and first index is the area for the letter
+    * Allowing us to calculate the width
+    * 
+    * If we are removing an object we always want to ensure that the letter is gone by using a width of 19
+    */
+    int width = 0;
+    (remove == 1 ? width = 19 : (width = (lastIndx-firstIndx)/21));
+
+   
+    int height = 21;
+
+    //Different width for the pictures of each letter. Have to adjust to correct width
+    //Height is always 21 pixels   
+    
+    for (int x = 0; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            //y*width+x turns the XY into correct consecutive string for drawpixel. firstIndx is added to draw correct letter from array
+            switch (remove)
+            {
+            case 1:
+                drawPixel(x+offsetX,y+offsetY,BLACK);
+                break;
+            default:
+                if(letter_images[y*width+x+firstIndx]) {
+                    drawPixel(x+offsetX,y+offsetY,WHITE);
+                }
+                else{
+                    drawPixel(x+offsetX,y+offsetY,BLACK);
+                }
+                break;
             }
         }
     }
 }
 
+
 /*
-skriver ut en siffra på särmen på rätt plats på spel skärmen
+skriver ut en siffra på rätt plats på spel skärmen
 int value: är siffran som ska skrivas ut
 int offset: är förskutningen i x-led     
 */

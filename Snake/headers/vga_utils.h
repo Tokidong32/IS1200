@@ -30,6 +30,8 @@ void drawMainMenu();
 
 void drawMenuHighlight(int highlight, int lastHighlight);
 
+void drawLetter(char letter, int offsetX, int offsetY, char remove);
+
 void drawScore(int score);
 
 void drawNumber(int value, int offset);
