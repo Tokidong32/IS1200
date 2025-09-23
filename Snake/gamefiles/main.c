@@ -11,21 +11,19 @@ int main()
     clearScreen();
     
     gpioInit();  
-    runHighscoreLetters();
-    print(players.players[0].choosenLetter);
-    //drawLetter('C',100,100,1);
-    /*
+    // runHighscoreLetters();
+    //print(players.players[0].choosenLetter);
+
     while (1)
     {
-    int menuPick = runMenu();
-    
-        switch (menuPick)
+        switch (runMenu())
         {
             case 0:
                 clearScreen();
                 runGame();
                 clearScreen();
-
+                runHighscoreLetters();              
+                clearScreen();
                 break;
             case 1:
                 //highScoreMenu();
@@ -37,5 +35,4 @@ int main()
                 break;  
         }
     } 
-        */
 }

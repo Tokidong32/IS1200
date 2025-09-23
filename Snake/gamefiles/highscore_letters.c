@@ -51,7 +51,7 @@ void makeMenu()
     int letterPlacementX = charOffsetX;
     int indx = 0;
 
-    while (indx < 6)
+    while (indx < 5)
     {
         player_button = *GPIO_DATA & 0xf;
        
@@ -84,7 +84,7 @@ void makeMenu()
                 break;
 
             case 0b1000:
-                (letterPlacementX >= (charOffsetX-20)+1) ? letterPlacementX -= 20:0;
+                (letterPlacementX > charOffsetX) ? letterPlacementX -= 20:0;
                 indx --;
                 indx %= 6;
                 break;

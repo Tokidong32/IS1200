@@ -69,7 +69,7 @@ void handle_interrupt(unsigned cause)
   }  
 }
 
-int runGame()
+void runGame()
 {
   end_game = 0;
 
@@ -115,7 +115,7 @@ int runGame()
     }
     if(end_game)
     {
-      return 0;
+      break;
     }
   }
 }

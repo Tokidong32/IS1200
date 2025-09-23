@@ -12,6 +12,6 @@ int gameTick(Board *game, Cell **head, Cell **end, int dir);
 
 void handle_interrupt(unsigned cause);
 
-int runGame();
+void runGame();
 
 #endif
