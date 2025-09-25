@@ -8,7 +8,7 @@
 
 extern void enable_interrupt();
 
-int gameTick(Board *game, Cell **head, Cell **end, int dir);
+int gameTick(Board *game);
 
 void handle_interrupt(unsigned cause);
 

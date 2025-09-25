@@ -1,10 +1,10 @@
 #include "../headers/game_logic.h"
 #include "../headers/globals.h"
 
-static unsigned int seed = 13579;
+static unsigned int seed = 123456789;
 
 unsigned int pseudoRandom() {
-    seed = (123456 * seed);
+    seed = (1103515245 * seed + 12345) & 0x7fffffff; 
     return (seed >> 16) & 0x7FFF; 
 }
 
@@ -57,21 +57,18 @@ Cell* moveHead(Cell *from, Cell *to ){
 void newApple(Board *game){
     //scana efter godkända Celler
         //en array med pos
-    Pos* validPos[(game->rows-2)*(game->colums-2)];
+    Cell* validPos[(game->rows-2)*(game->colums-2)];
     int nofValidPos = 0;
-    for (int i = 1; i < game->rows-1; i++){
-        for (int j = 1; j < game->colums-1; j++){
-            if(game->cells[i][j].type == 0){
+    for (int y = 1; y < game->rows-1; y++){
+        for (int x = 1; x < game->colums-1; x++){
+            if(game->cells[y][x].type == 0){
         //om cellens typ är 0 dvs tom läggs en pekare till den cellen in i arrayen
-                validPos[nofValidPos++  /*increment antal godkända Celler*/] = &game->cells[i][j].pos;
+                validPos[nofValidPos++] = &game->cells[y][x];
             }
         }
     }
     int choose = pseudoRandom() % nofValidPos;
-    int x = validPos[choose]->x;
-    int y = validPos[choose]->y;
-
-    game->cells[x][y].type = 5;
+    validPos[choose]->type = 5;
 }
 
 Cell* getCellInDirection(Board* game, Cell* from, int dir){
@@ -108,11 +105,11 @@ void game_init(Board *game, Cell **head, Cell **end)
     int boardrow = game->rows;
 
     //creates snake_head at 1/3 of row and 1/2 of coloumns
-    (*head) = &game->cells[boardrow/3][boardcol/2];
+    *head = &game->cells[boardrow/3][boardcol/2];
     game->cells[boardrow/3][boardcol/2].type = 2;
 
     //creates and links snake_end with snake_head
-    (*end) = &game->cells[(boardrow/3)-1][boardcol/2];
+    *end = &game->cells[(boardrow/3)-1][boardcol/2];
     game->cells[(boardrow/3)-1][boardcol/2].type = 4;
     (*end)->nextCell = *head;
 

@@ -34,5 +34,5 @@ void drawLetter(char letter, int offsetX, int offsetY, char remove);
 
 void drawScore(int score);
 
-void drawNumber(int value, int offset);
+void drawNumber(int value, int offsetX, int offsetY);
 #endif 

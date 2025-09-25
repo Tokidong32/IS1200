@@ -187,7 +187,7 @@ skriver ut en siffra på rätt plats på spel skärmen
 int value: är siffran som ska skrivas ut
 int offset: är förskutningen i x-led     
 */
-void drawNumber(int value, int offset){
+void drawNumber(int value, int offsetX, int offsetY){
 
   int pxToPaint[14][10];
   for (int y = 0; y < 14; y++){
@@ -501,9 +501,9 @@ void drawNumber(int value, int offset){
   for (int y = 0; y < 14; y++){
     for (int x = 0; x < 10; x++){
       if(pxToPaint[y][x]){
-        drawPixel(x+70+offset,y+8,0xff);
+        drawPixel(x+offsetX,y+offsetY,0xff);
       }else{
-        drawPixel(x+70+offset,y+8,0x00);
+        drawPixel(x+offsetX,y+offsetY,0x00);
       }
     } 
   }  
@@ -515,11 +515,12 @@ int score: är poängen som ska skrivas ut
 */
 void drawScore(int score){
     int i = 1000;
-    int offset = 0;
+    int offsetX = 70;
+    int offsetY = 10;
     while (i>0)
     {
-        drawNumber((score/i) % 10,offset);  
+        drawNumber((score/i) % 10,offsetX, offsetY);  
         i = i/10;
-        offset += 12;
+        offsetX += 12;
     }
 }
