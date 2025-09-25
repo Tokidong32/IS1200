@@ -6,28 +6,28 @@ Board game_board;
 Cell *snake_head;
 Cell *snake_end;
 volatile int game_running;
-int snake_lastdir = 4;
+int snake_lastdir;
 
-int gameTick(Board *game) {
+int gameTick() {
 
     Cell *next = 0;
 
     if(snake_lastdir % 2 == 0){
         if(player_button % 2 == 1){
-            next = getCellInDirection(game,snake_head,player_button);
+            next = getCellInDirection(&game_board,snake_head,player_button);
             snake_lastdir = player_button;
         }
         else{
-            next = getCellInDirection(game,snake_head,snake_lastdir);
+            next = getCellInDirection(&game_board,snake_head,snake_lastdir);
         }
     }
     else{
         if(player_button % 2 == 0){
-            next = getCellInDirection(game,snake_head,player_button);
+            next = getCellInDirection(&game_board,snake_head,player_button);
             snake_lastdir = player_button;
         }
         else{
-            next = getCellInDirection(game,snake_head,snake_lastdir);
+            next = getCellInDirection(&game_board,snake_head,snake_lastdir);
         }
     }
 
@@ -41,7 +41,7 @@ int gameTick(Board *game) {
       break;
     case 5: // ätit äpple
       currentGameScore += 1;
-      newApple(game);
+      newApple(&game_board);
       break;
     default:
             snake_end = moveEnd(snake_end);
@@ -51,11 +51,10 @@ int gameTick(Board *game) {
     return 1;
 }
 
-
 void handle_interrupt(unsigned cause)
 {
   *TMR_STAT &= 0;
-  game_running = gameTick(&game_board);
+  game_running = gameTick();
   if(game_running == 1){
     drawScore(currentGameScore);
     drawBoard(&game_board);
@@ -64,23 +63,14 @@ void handle_interrupt(unsigned cause)
     *TMR_CTRL |= 1 << 2; // start
   }
   else{
-    *TMR_STAT &= 0;
-    *TMR_CTRL |= 1 << 3; // stop ?
     clearScreen();
+    resetTimer();
   }  
-}
-//------------KAN ligga i annan Fill-----------
-void timer_init(){
-  *TMR_CTRL |= 1; 
-  *TMR_PRDL = 0x0B20;
-  *TMR_PRDH = 0x30;
-
-  enable_interrupt();
-  *TMR_CTRL |= 1 << 2;
 }
 
 void runGame(){
   
+  snake_lastdir = 2;
   game_board.rows = 20;
   game_board.colums = 20;
   game_running = 1;
@@ -92,23 +82,23 @@ void runGame(){
   }
   
   game_init(&game_board,&snake_head,&snake_end);
-  timer_init();
+  timerInterruptInit();
   
-  while (game_running == 1)
-  {
+  while (game_running == 1){
+
    int tmp = (*GPIO_DATA & 0xf);
-   switch (tmp)
-   {
-    case 1: // upp
+   switch (tmp){
+    
+    case 0b0001: // upp
       player_button = 1;
       break;
-    case 2: // höger
+    case 0b0010: // höger
       player_button = 2;
       break;
-    case 4:  // ner
+    case 0b0100:  // ner
       player_button = 3;
       break;
-    case 8:  // vänster
+    case 0b1000:  // vänster
       player_button = 4;
       break;
     }

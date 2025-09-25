@@ -38,7 +38,6 @@ void makeWalls(Board* game){
 
 }
 
-
 Cell* moveEnd(Cell *from){
     from->type = 0;
     from->nextCell->type = 4;
@@ -53,10 +52,10 @@ Cell* moveHead(Cell *from, Cell *to ){
     to->type = 2;
     return to;
 }
-// INTE DET BÄSTA SÄTTET MÖJLIGT
+
 void newApple(Board *game){
     //scana efter godkända Celler
-        //en array med pos
+        //en array med cell pekare
     Cell* validPos[(game->rows-2)*(game->colums-2)];
     int nofValidPos = 0;
     for (int y = 1; y < game->rows-1; y++){
@@ -78,17 +77,17 @@ Cell* getCellInDirection(Board* game, Cell* from, int dir){
 
     switch ( dir ) //vilken riktning var väljd
     {
-    case 0b0001: // up
-        to = &game->cells[posX-1][posY];
+    case 1: // up
+        to = &game->cells[posX][posY-1];
         break;
-    case 0b0010: // höger
-        to = &game->cells[posX][posY+1];
-        break;
-    case 0b0100: // ner
+    case 2: // höger
         to = &game->cells[posX+1][posY];
         break;
-    case 0b1000: // vänster
-        to = &game->cells[posX][posY-1];
+    case 3: // ner
+        to = &game->cells[posX][posY+1];
+        break;
+    case 4: // vänster
+        to = &game->cells[posX-1][posY];
         break;
     default:
         to = 0;
@@ -105,11 +104,11 @@ void game_init(Board *game, Cell **head, Cell **end)
     int boardrow = game->rows;
 
     //creates snake_head at 1/3 of row and 1/2 of coloumns
-    *head = &game->cells[boardrow/3][boardcol/2];
+    (*head) = &game->cells[boardrow/3][boardcol/2];
     game->cells[boardrow/3][boardcol/2].type = 2;
 
     //creates and links snake_end with snake_head
-    *end = &game->cells[(boardrow/3)-1][boardcol/2];
+    (*end) = &game->cells[(boardrow/3)-1][boardcol/2];
     game->cells[(boardrow/3)-1][boardcol/2].type = 4;
     (*end)->nextCell = *head;
 

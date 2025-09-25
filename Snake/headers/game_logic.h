@@ -29,7 +29,6 @@ Cell newCell(int type, int row, int colum);
 
 // Board
 Board *newBoard(int rows, int colums);
-void freeBoard(Board *board);
 void makeWalls(Board *game);
 
 // Snake rörelse

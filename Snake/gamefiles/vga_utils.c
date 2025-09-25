@@ -23,7 +23,7 @@ void drawCell(Cell* model){
         break;
     //Snake_end colour
     case 4:
-        color = PINK;
+        color = GREEN;
         break;
     //Snake_body colour
     case 3:
@@ -54,9 +54,9 @@ void drawCell(Cell* model){
 
 void drawBoard(Board* game){
 
-    for (int x = 0; x < game->rows; x ++){
-        for (int y = 0; y < game->colums; y ++){
-            drawCell(&game->cells[x][y]);
+    for (int y = 0; y < game->rows; y ++){
+        for (int x = 0; x < game->colums; x++){
+            drawCell(&game->cells[y][x]);
         }
     }
 }

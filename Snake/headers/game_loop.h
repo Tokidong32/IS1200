@@ -8,7 +8,7 @@
 
 extern void enable_interrupt();
 
-int gameTick(Board *game);
+int gameTick();
 
 void handle_interrupt(unsigned cause);
 

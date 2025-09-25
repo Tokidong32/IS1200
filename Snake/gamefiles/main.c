@@ -9,21 +9,15 @@
 int main()
 {    
     clearScreen();
-    
-    gpioInit();  
-    // runHighscoreLetters();
-    //print(players.players[0].choosenLetter);
+    gpioInit();
 
     while (1)
     {
         switch (runMenu())
         {
             case 0:
-                clearScreen();
                 runGame();
-                clearScreen();
-                runHighscoreLetters();              
-                clearScreen();
+                runHighscoreLetters();
                 break;
             case 1:
                 //highScoreMenu();
