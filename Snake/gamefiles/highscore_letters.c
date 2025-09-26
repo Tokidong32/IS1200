@@ -81,12 +81,11 @@ void getLetterFromArray(char charToFind,int *firstIndexOfChar, int *lastIndexOfC
 void makeLetterMenu()
 {   
     int i = 4;
-    while (currentGameScore >= players.players[i].playerScore && i >= 0){
+    while (i >= 0 && currentGameScore >= players.players[i].playerScore){
        i--;
     }
 
     int hole = i+1;
-    
 
     for (int j = 3; j > i; j--){
         players.players[j+1] = players.players[j];
@@ -158,7 +157,7 @@ void makeLetterMenu()
                 if(letterPlacementX > charOffsetX)
                 {
                     letterPlacementX -= 20;
-                    indx --;
+                    indx--;
                 }
                 break;
             }
@@ -197,7 +196,6 @@ void runHighScoreMenu()
         {
             //DRAW EACH NUMBER
             drawNumber(score%10,RESOLUTION_X/6+200,eachPlayer*30+90,0); // FIRST DIGIT
-            //print_dec(score);
             drawNumber(score/10%10,RESOLUTION_X/6+180,eachPlayer*30+90,0);   
             drawNumber(score/100%10,RESOLUTION_X/6+160,eachPlayer*30+90,0);
             drawNumber(score/1000%10,RESOLUTION_X/6+140,eachPlayer*30+90,0); //LAST DIGIT
