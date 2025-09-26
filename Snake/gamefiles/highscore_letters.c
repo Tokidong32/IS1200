@@ -1,3 +1,4 @@
+#include "../headers/dtekv-lib.h"
 #include "../headers/highscore_menu.h"
 #include "../headers/timer_utils.h"
 #include "../headers/gpio_utils.h"
@@ -6,7 +7,7 @@
 
 const char availableLetters[7] = {'A','B','C','1','2','3'};
 
-const int letterPlacementY = RESOLUTION_Y/2;
+const int letterPlacementY = RESOLUTION_Y/2-21;
 const int charOffsetX = RESOLUTION_X/4;
 
 //Ugly hash"ish" function that recieves the wanted letter from 1-3 and A-C and brings the corresponding first index and last index for that letter in the array
@@ -38,25 +39,93 @@ void getLetterFromArray(char charToFind,int *firstIndexOfChar, int *lastIndexOfC
         *firstIndexOfChar   =  (13+13+12+17+13)*21;
         *lastIndexOfChar    = ((13+13+12+17+13+14)*21);
         break;
-    }
+    
+    case '4':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16)*21);
+        break;
+    
+    case '5':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12)*21);
+        break;
+    
+    case '6':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16+12)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12+14)*21);
+        break;
+    
+    case '7':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16+12+14)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12+14+13)*21);
+        break;
+    
+    case '8':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16+12+14+13)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12+14+13+13)*21);
+        break;
+        
+    case '9':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16+12+14+13+13)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12+14+13+13+14)*21);
+        break;
+
+    case '0':   
+        *firstIndexOfChar   =  (13+13+12+17+13+14+16+12+14+13+13+14)*21;
+        *lastIndexOfChar    = ((13+13+12+17+13+14+16+12+14+13+13+14+14)*21);
+        break;
+    }    
 }
 
 
-void makeMenu()
+void makeLetterMenu()
 {   
-    PlayerScore* curplayer = &players.players[players.currentEmptyIndx];
+    int i = 4;
+    while (currentGameScore >= players.players[i].playerScore && i >= 0){
+       i--;
+    }
+
+    int hole = i+1;
+    
+
+    for (int j = 3; j > i; j--){
+        players.players[j+1] = players.players[j];
+    }
+
+    PlayerScore* curplayer = &players.players[hole];
+    
     curplayer->playerScore = currentGameScore;
 
-    int activeOption = 0;
-    int letterPlacementX = charOffsetX;
-    int indx = 0;
+    curplayer->choosenLetter[0] = availableLetters[0];
+    curplayer->choosenLetter[1] = availableLetters[1];
+    curplayer->choosenLetter[2] = availableLetters[2];
+    curplayer->choosenLetter[3] = availableLetters[3];
+    curplayer->choosenLetter[4] = availableLetters[4];
+    curplayer->choosenLetter[5] = availableLetters[5];
 
-    while (indx < 5)
+
+  
+    int letterPlacementX = charOffsetX;
+    int activeOption = 0;
+    int indx = 0;
+    int counter = 0;
+    while (indx != 6)
     {
         player_button = *GPIO_DATA & 0xf;
        
         if(*TMR_STAT & 1)
         {
+            if(counter++ % 5)
+            {
+                drawHighscoreHighlight(BLACK,indx-1,indx-1);
+                drawHighscoreHighlight(DARKGREEN,indx,indx);
+                drawHighscoreHighlight(BLACK,indx+1,indx+1);
+            }
+            else
+            {
+                drawHighscoreHighlight(BLACK,indx,indx);
+            } 
+
             switch (player_button)
             {
             case 0b0001:
@@ -78,28 +147,67 @@ void makeMenu()
                 break;
 
             case 0b0010:
-                (letterPlacementX <= charOffsetX+(20*6)-20) ? letterPlacementX += 20:0;
-                indx ++;
-                indx %= 6;
+                if(letterPlacementX <= charOffsetX+(20*6)-20)
+                {
+                    letterPlacementX += 20;
+                    indx++;
+                }
                 break;
 
             case 0b1000:
-                (letterPlacementX > charOffsetX) ? letterPlacementX -= 20:0;
-                indx --;
-                indx %= 6;
+                if(letterPlacementX > charOffsetX)
+                {
+                    letterPlacementX -= 20;
+                    indx --;
+                }
                 break;
             }
             runTimer(); 
         }
     }
-    players.currentEmptyIndx++;
-    players.currentEmptyIndx %= 5;
-    resetTimer();
+    resetTimer();    
+    clearScreen();
 }
 
 void runHighscoreLetters()
 {
     resetTimer(); 
     runTimer();
-    makeMenu();
+    makeLetterMenu();
+    player_button = 0;
+    delay(100);
+    clearScreen();
+}
+
+void runHighScoreMenu()
+{
+    clearScreen();
+        
+    for (int eachPlayer = 0; eachPlayer < 5; eachPlayer++){
+        for (int eachLetter = 0; eachLetter < 6; eachLetter++){
+            drawLetter(players.players[eachPlayer].choosenLetter[eachLetter],eachLetter*20+RESOLUTION_X/6,eachPlayer*30+90, 0);
+        }
+    }
+
+    for (int eachPlayer = 0; eachPlayer < 5; eachPlayer++){
+
+        int score = players.players[eachPlayer].playerScore;
+
+        if(score >= 0)
+        {
+            //DRAW EACH NUMBER
+            drawNumber(score%10,RESOLUTION_X/6+200,eachPlayer*30+90,0); // FIRST DIGIT
+            //print_dec(score);
+            drawNumber(score/10%10,RESOLUTION_X/6+180,eachPlayer*30+90,0);   
+            drawNumber(score/100%10,RESOLUTION_X/6+160,eachPlayer*30+90,0);
+            drawNumber(score/1000%10,RESOLUTION_X/6+140,eachPlayer*30+90,0); //LAST DIGIT
+        }
+    }
+
+    while (player_button != 8){
+        player_button = *GPIO_DATA & 0xf;
+    }
+    delay(100);
+    player_button = 0;
+    clearScreen();
 }

@@ -1,6 +1,4 @@
 #include "../headers/timer_utils.h"
-
-//Game Timer
 void timerInterruptInit()
 {
     *TMR_CTRL |= 1; 
@@ -12,10 +10,11 @@ void timerInterruptInit()
     *TMR_CTRL |= 1 << 2;
 }
 
-//menu Timmer
+
 void runTimer()
 {
     *TMR_STAT |= 1;    
+    
     *TMR_PRDL = 0x0900;
     *TMR_PRDH = 0x3D;
 

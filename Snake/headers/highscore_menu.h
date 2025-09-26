@@ -9,7 +9,7 @@ typedef struct PlayerScore
 
 typedef struct AllPlayedPlayers
 {
-   PlayerScore players[5];
+   PlayerScore players[6];
    int currentEmptyIndx;
 }AllPlayedPlayers;
 
@@ -17,4 +17,6 @@ typedef struct AllPlayedPlayers
 void getLetterFromArray(char charToFind,int *firstIndexOfChar, int *lastIndexOfChar);
 
 void runHighscoreLetters();
+
+void runHighScoreMenu();
 #endif

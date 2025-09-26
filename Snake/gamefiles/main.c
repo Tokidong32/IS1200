@@ -9,8 +9,7 @@
 int main()
 {    
     clearScreen();
-    gpioInit();
-
+    gpioInit(); 
     while (1)
     {
         switch (runMenu())
@@ -20,8 +19,7 @@ int main()
                 runHighscoreLetters();
                 break;
             case 1:
-                //highScoreMenu();
-                clearScreen();
+                runHighScoreMenu();
                 break;
             case 2:
                 clearScreen();

@@ -41,6 +41,7 @@ int gameTick() {
       break;
     case 5: // ätit äpple
       currentGameScore += 1;
+      drawScore(currentGameScore);
       newApple(&game_board);
       break;
     default:
@@ -56,7 +57,6 @@ void handle_interrupt(unsigned cause)
   *TMR_STAT &= 0;
   game_running = gameTick();
   if(game_running == 1){
-    drawScore(currentGameScore);
     drawBoard(&game_board);
     *TMR_PRDL = 0x0B20;
     *TMR_PRDH = 0x30;
@@ -84,6 +84,8 @@ void runGame(){
   game_init(&game_board,&snake_head,&snake_end);
   timerInterruptInit();
   
+  drawScore(0);
+
   while (game_running == 1){
 
    int tmp = (*GPIO_DATA & 0xf);

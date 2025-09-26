@@ -129,8 +129,19 @@ int nextprime( int inval )
 /*
 *
 *
-* Own malloc to allocate space on .text
-*
+* Simple Delay function()
+* Milliseconds
 *
 */
-
+void delay(int pause)
+{
+  volatile int addi = 0;
+  for (int i = 0; i < pause; i++)
+  {
+    for (int i = 0; i < 10050; i++)
+    {
+      addi++;
+    }
+  }
+  pause = addi;
+}

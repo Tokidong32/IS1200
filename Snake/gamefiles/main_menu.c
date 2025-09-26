@@ -31,9 +31,7 @@ int moveSelect()
         }
     }
     drawMenuHighlight(activeOption,prev_option);
-
     resetTimer();
-
     return activeOption;
 }
 
