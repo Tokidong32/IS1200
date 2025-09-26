@@ -10,6 +10,7 @@ int main()
 {    
     clearScreen();
     gpioInit(); 
+
     while (1)
     {
         switch (runMenu())

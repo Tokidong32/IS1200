@@ -117,7 +117,7 @@ void makeLetterMenu()
             if(counter++ % 5)
             {
                 drawHighscoreHighlight(BLACK,indx-1,indx-1);
-                drawHighscoreHighlight(DARKGREEN,indx,indx);
+                drawHighscoreHighlight(GREEN,indx,indx);
                 drawHighscoreHighlight(BLACK,indx+1,indx+1);
             }
             else
@@ -130,16 +130,17 @@ void makeLetterMenu()
             case 0b0001:
                 drawLetter(availableLetters[activeOption],letterPlacementX,letterPlacementY,1);
 
-                (activeOption <= 0) ? activeOption = 5: activeOption--;
+                (activeOption >= 5) ? activeOption = 0: activeOption++;
                 curplayer->choosenLetter[indx] = availableLetters[activeOption];
 
                 drawLetter(availableLetters[activeOption],letterPlacementX,letterPlacementY,0);
+                
                 break;
 
             case 0b0100:
                 drawLetter(availableLetters[activeOption],letterPlacementX,letterPlacementY,1);
 
-                (activeOption >= 5) ? activeOption = 0: activeOption++;
+                (activeOption <= 0) ? activeOption = 5: activeOption--;
                 curplayer->choosenLetter[indx] = availableLetters[activeOption];
 
                 drawLetter(availableLetters[activeOption],letterPlacementX,letterPlacementY,0);
@@ -181,10 +182,12 @@ void runHighscoreLetters()
 void runHighScoreMenu()
 {
     clearScreen();
-        
+    
+    drawHighscoreTitle();
+
     for (int eachPlayer = 0; eachPlayer < 5; eachPlayer++){
         for (int eachLetter = 0; eachLetter < 6; eachLetter++){
-            drawLetter(players.players[eachPlayer].choosenLetter[eachLetter],eachLetter*20+RESOLUTION_X/6,eachPlayer*30+90, 0);
+            drawLetter(players.players[eachPlayer].choosenLetter[eachLetter],eachLetter*20+RESOLUTION_X/6,eachPlayer*30+90,0); 
         }
     }
 
@@ -192,13 +195,14 @@ void runHighScoreMenu()
 
         int score = players.players[eachPlayer].playerScore;
 
-        if(score >= 0)
+        if(score > 0)
         {
+            drawHighscoreCol(eachPlayer);
             //DRAW EACH NUMBER
-            drawNumber(score%10,RESOLUTION_X/6+200,eachPlayer*30+90,0); // FIRST DIGIT
+            drawNumber(score%10,RESOLUTION_X/6+200,eachPlayer*30+90,0); // SMALLEST DIGIT 000X
             drawNumber(score/10%10,RESOLUTION_X/6+180,eachPlayer*30+90,0);   
             drawNumber(score/100%10,RESOLUTION_X/6+160,eachPlayer*30+90,0);
-            drawNumber(score/1000%10,RESOLUTION_X/6+140,eachPlayer*30+90,0); //LAST DIGIT
+            drawNumber(score/1000%10,RESOLUTION_X/6+140,eachPlayer*30+90,0); //LARGEST DIGIT X000
         }
     }
 

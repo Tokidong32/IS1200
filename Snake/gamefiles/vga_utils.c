@@ -261,7 +261,7 @@ void drawNumber(int value, int offsetX, int offsetY,char remove)
 skriver ut poängen under spelets gång
 int score: är poängen som ska skrivas ut
 */
-void drawScore(int score)
+void drawGameScore(int score)
 {
   int offset = RESOLUTION_X/6;
   //REMOVE NUMBER
@@ -269,9 +269,55 @@ void drawScore(int score)
   drawNumber(score/10%10,offset+60,RESOLUTION_Y/24-2,1);
   drawNumber(score/100%10,offset+40,RESOLUTION_Y/24-2,1);
   drawNumber(score/1000%10,offset+20,RESOLUTION_Y/24-2,1);
+
   //DRAW BACK NEW NUMBER
   drawNumber(score%10,offset+80,RESOLUTION_Y/24-2,0);
   drawNumber(score/10%10,offset+60,RESOLUTION_Y/24-2,0);
   drawNumber(score/100%10,offset+40,RESOLUTION_Y/24-2,0);
   drawNumber(score/1000%10,offset+20,RESOLUTION_Y/24-2,0);
+}
+
+void drawHighscoreCol(int index)
+{
+  for (int x = 0; x < 4; x++){
+    for (int y = 0; y < 15; y++){
+      if(two_dots[y*4+x]){
+        drawPixel(x+RESOLUTION_X/6+124,y+index*30+95,WHITE);
+      }
+    }
+  }
+}
+
+void drawHighscorePLAYER()
+{
+    for (int x = 0; x < 104; x++){
+    for(int y = 0; y < 27; y++){
+      if(highscore_menu_player_image[y*104+x]){
+        
+        drawPixel(x+RESOLUTION_X/6,y+RESOLUTION_Y/6,WHITE);
+      }
+      else{
+        drawPixel(x+RESOLUTION_X/6,y+RESOLUTION_Y/6,BLACK);
+      }
+    }
+  }
+}
+void drawHighscoreSCORE()
+{
+  for (int x = 0; x < 84; x++){
+    for(int y = 0; y < 15; y++){
+      if(highscore_menu_score_image[y*84+x]){
+        drawPixel(x+180,y+RESOLUTION_Y/6+7,WHITE);
+      }
+      else{
+        drawPixel(x+180,y+RESOLUTION_Y/6+7,BLACK);
+      }
+    }
+  }
+}
+
+void drawHighscoreTitle()
+{
+  drawHighscorePLAYER();
+  drawHighscoreSCORE();
 }

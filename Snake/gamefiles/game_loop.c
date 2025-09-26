@@ -41,7 +41,7 @@ int gameTick() {
       break;
     case 5: // ätit äpple
       currentGameScore += 1;
-      drawScore(currentGameScore);
+      drawGameScore(currentGameScore);
       newApple(&game_board);
       break;
     default:
@@ -84,7 +84,7 @@ void runGame(){
   game_init(&game_board,&snake_head,&snake_end);
   timerInterruptInit();
   
-  drawScore(0);
+  drawGameScore(0);
 
   while (game_running == 1){
 

@@ -12,7 +12,6 @@
 
 #define RED    0xE0
 #define GREEN  0x1C
-#define DARKGREEN  0x1E
 #define BLUE   0xA3
 #define PURPLE 0x82
 #define PINK   0xE7
@@ -35,7 +34,11 @@ void drawLetter(char letter, int offsetX, int offsetY, char remove);
 
 void drawHighscoreHighlight(int color,int highlight,int lastHighlight);
 
-void drawScore(int score);
+void drawGameScore(int score);
 
 void drawNumber(int value, int offsetX, int offestY,char remove);
+
+void drawHighscoreCol(int index);
+
+void drawHighscoreTitle();
 #endif 

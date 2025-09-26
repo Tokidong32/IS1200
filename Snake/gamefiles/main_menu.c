@@ -40,7 +40,7 @@ int runMenu()
     resetTimer();
 
     drawMainMenu();
-        
+    drawMenuHighlight(0,1);
     runTimer();
     return moveSelect();
 }
