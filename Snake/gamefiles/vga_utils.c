@@ -222,39 +222,7 @@ int offset: är förskutningen i x-led
 void drawNumber(int value, int offsetX, int offsetY,char remove)
 {
   value += 48;
-  switch (value)
-  {
-  case '0':
-    drawLetter('0',offsetX,offsetY,remove);
-    break;
-  case '1':
-    drawLetter('1',offsetX,offsetY,remove);
-    break;
-  case '2':
-   drawLetter('2',offsetX,offsetY,remove);
-    break;
-  case '3':
-   drawLetter('3',offsetX,offsetY,remove);
-    break;
-  case '4':
-   drawLetter('4',offsetX,offsetY,remove);
-    break;
-  case '5':
-   drawLetter('5',offsetX,offsetY,remove);
-    break;
-  case '6':
-    drawLetter('6',offsetX,offsetY,remove);
-    break;
-  case '7':
-    drawLetter('7',offsetX,offsetY,remove);  
-    break;
-  case '8':
-    drawLetter('8',offsetX,offsetY,remove); 
-    break;
-  default:
-   drawLetter('9',offsetX,offsetY,remove);
-    break;
-  }
+  drawLetter(value,offsetX,offsetY,remove);
 }
 
 /*
